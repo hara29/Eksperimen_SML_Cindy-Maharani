@@ -1,0 +1,36 @@
+name: Preprocessing Dataset
+
+on:
+  push:
+    paths:
+      - 'preprocessing/**'
+      - 'bankdataset_raw.csv'
+      - '.github/workflows/preprocessing.yml'
+  workflow_dispatch:
+
+jobs:
+  preprocess:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12.7'
+
+      - name: Install dependencies
+        run: |
+          pip install pandas==2.2.2 scikit-learn==1.4.2
+
+      - name: Run Preprocessing Script
+        run: |
+          python preprocessing/automate_CindyMaharani.py
+
+      - name: Upload Preprocessed Dataset
+        uses: actions/upload-artifact@v3
+        with:
+          name: bankdataset_preprocessed
+          path: bankdataset_preprocessed.csv
