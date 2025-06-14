@@ -30,7 +30,7 @@ jobs:
           python preprocessing/automate_CindyMaharani.py
 
       - name: Upload Preprocessed Dataset
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: bankdataset_preprocessed
           path: bankdataset_preprocessed.csv
