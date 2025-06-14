@@ -17,7 +17,11 @@ def preprocess_data(path):
         df.drop(columns=['RowNumber', 'CustomerId', 'Surname'], inplace=True)
 
         # One-hot encoding
-        df = pd.get_dummies(df, columns=['Gender', 'Geography', 'Card Type'], drop_first=True)
+        encoder = OneHotEncoder(drop='first', sparse=False)
+        encoded = encoder.fit_transform(df[categorical_cols])
+        encoded_df = pd.DataFrame(encoded, columns=encoder.get_feature_names_out(categorical_cols))
+        df = df.drop(columns=categorical_cols)
+        df = pd.concat([df.reset_index(drop=True), encoded_df.reset_index(drop=True)], axis=1)
 
         # Scaling fitur numerik
         scaler = StandardScaler()
