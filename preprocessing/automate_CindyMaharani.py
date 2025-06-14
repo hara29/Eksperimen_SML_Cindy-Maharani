@@ -21,6 +21,22 @@ def preprocess_data(path):
     scaled_cols = ['Age', 'CreditScore', 'Balance', 'EstimatedSalary', 'Point Earned']
     df[scaled_cols] = scaler.fit_transform(df[scaled_cols])
 
+    # Deteksi dan penanganan outlier dengan IQR
+    def remove_outliers_iqr(df, cols):
+        for col in cols:
+            Q1 = df[col].quantile(0.25)
+            Q3 = df[col].quantile(0.75)
+            IQR = Q3 - Q1
+            lower_bound = Q1 - 1.5 * IQR
+            upper_bound = Q3 + 1.5 * IQR
+            before = df.shape[0]
+            df = df[(df[col] >= lower_bound) & (df[col] <= upper_bound)]
+            after = df.shape[0]
+            print(f"{col}: Removed {before - after} outliers.")
+        return df
+
+    df = remove_outliers_iqr(df, scaled_cols)
+
     # Pisahkan fitur dan target
     X = df.drop(columns=['Exited'])
     y = df['Exited']
