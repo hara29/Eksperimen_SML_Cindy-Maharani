@@ -63,6 +63,10 @@ def preprocess_data(path):
         with open(os.path.join(output_dir, "scaler.pkl"), "wb") as f:
             pickle.dump(scaler, f)
 
+        # Simpan encoder
+        with open(os.path.join(output_dir, "encoder.pkl"), "wb") as f:
+            pickle.dump(encoder, f)
+
         # Simpan data hasil split
         pd.DataFrame(X_train).to_csv(os.path.join(output_dir, "X_train.csv"), index=False)
         pd.DataFrame(X_test).to_csv(os.path.join(output_dir, "X_test.csv"), index=False)
