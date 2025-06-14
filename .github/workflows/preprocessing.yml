@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - 'preprocessing/**'
-      - 'bankdataset_raw.csv'
+      - 'Bank-Customer-Attrition_preprocessing.csv'
       - '.github/workflows/preprocessing.yml'
   workflow_dispatch:
 
