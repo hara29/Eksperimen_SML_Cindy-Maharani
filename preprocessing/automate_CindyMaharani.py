@@ -1,4 +1,4 @@
-
+import os
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
@@ -42,6 +42,9 @@ def preprocess_data(path):
     y = df['Exited']
 
     # Simpan hasil preprocessing ke file
-    df.to_csv("bankdataset_preprocessed.csv", index=False)
+    output_path = os.path.join(os.getcwd(), "bankdataset_preprocessed.csv")
+    df.to_csv(output_path, index=False)
 
+    print(f"Hasil preprocessing disimpan ke: {output_path}")
+    
     return X, y
