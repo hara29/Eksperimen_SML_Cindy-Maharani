@@ -77,4 +77,4 @@ def preprocess_data(path):
         print("❌ ERROR:", str(e))
 
 if __name__ == "__main__":
-    preprocess_data("bankdataset_raw.csv")
+    preprocess_data("../Bank-Customer-Attrition_preprocessing.csv")
