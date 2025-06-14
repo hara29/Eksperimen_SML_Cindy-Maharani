@@ -51,6 +51,7 @@ def preprocess_data(path):
     # Buat folder output
     output_dir = "bank_preprocessing"
     os.makedirs(output_dir, exist_ok=True)
+    print("✅ Folder dibuat:", os.path.abspath(output_dir))
 
     # Simpan scaler
     with open(os.path.join(output_dir, "scaler.pkl"), "wb") as f:
@@ -61,6 +62,10 @@ def preprocess_data(path):
     pd.DataFrame(X_test).to_csv(os.path.join(output_dir, "X_test.csv"), index=False)
     pd.DataFrame(y_train).to_csv(os.path.join(output_dir, "y_train.csv"), index=False)
     pd.DataFrame(y_test).to_csv(os.path.join(output_dir, "y_test.csv"), index=False)
+
+    print("📁 Isi folder:")
+    for file in os.listdir(output_dir):
+        print(" -", file)
 
     # Simpan data gabungan hasil preprocessing
     combined_df = pd.concat([X_res, y_res], axis=1)

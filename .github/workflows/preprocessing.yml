@@ -35,5 +35,6 @@ jobs:
           name: bank_preprocessing
           path: bank_preprocessing/
 
-      - name: List all files
-        run: ls -R
+      - name: List bank_preprocessing
+        run: ls -lh bank_preprocessing || echo "❌ Folder tidak ditemukan"
+
