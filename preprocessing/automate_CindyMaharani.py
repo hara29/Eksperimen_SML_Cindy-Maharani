@@ -1,7 +1,9 @@
 import os
 import pandas as pd
+import pickle 
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
+from imblearn.over_sampling import SMOTE
 
 def preprocess_data(path):
     # Load data
@@ -31,8 +33,6 @@ def preprocess_data(path):
             upper_bound = Q3 + 1.5 * IQR
             before = df.shape[0]
             df = df[(df[col] >= lower_bound) & (df[col] <= upper_bound)]
-            after = df.shape[0]
-            print(f"{col}: Removed {before - after} outliers.")
         return df
 
     df = remove_outliers_iqr(df, scaled_cols)
@@ -41,10 +41,29 @@ def preprocess_data(path):
     X = df.drop(columns=['Exited'])
     y = df['Exited']
 
-    # Simpan hasil preprocessing ke file
-    output_path = os.path.join(os.getcwd(), "bankdataset_preprocessed.csv")
-    df.to_csv(output_path, index=False)
+    # SMOTE untuk penyeimbangan kelas
+    smote = SMOTE(random_state=42)
+    X_res, y_res = smote.fit_resample(X, y)
 
-    print(f"Hasil preprocessing disimpan ke: {output_path}")
-    
-    return X, y
+    # Split data
+    X_train, X_test, y_train, y_test = train_test_split(X_res, y_res, test_size=0.2, random_state=42)
+
+    # Buat folder output
+    output_dir = "bank_preprocessing"
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Simpan scaler
+    with open(os.path.join(output_dir, "scaler.pkl"), "wb") as f:
+        pickle.dump(scaler, f)
+
+    # Simpan data hasil split
+    pd.DataFrame(X_train).to_csv(os.path.join(output_dir, "X_train.csv"), index=False)
+    pd.DataFrame(X_test).to_csv(os.path.join(output_dir, "X_test.csv"), index=False)
+    pd.DataFrame(y_train).to_csv(os.path.join(output_dir, "y_train.csv"), index=False)
+    pd.DataFrame(y_test).to_csv(os.path.join(output_dir, "y_test.csv"), index=False)
+
+    # Simpan data gabungan hasil preprocessing
+    combined_df = pd.concat([X_res, y_res], axis=1)
+    combined_df.to_csv("bankdataset_preprocessed.csv", index=False)
+
+    return X_train, X_test, y_train, y_test

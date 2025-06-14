@@ -32,8 +32,8 @@ jobs:
       - name: Upload Preprocessed Dataset
         uses: actions/upload-artifact@v4
         with:
-          name: bankdataset_preprocessed
-          path: bankdataset_preprocessed.csv
-      
+          name: bank_preprocessing
+          path: bank_preprocessing/
+
       - name: List all files
         run: ls -R
