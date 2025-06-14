@@ -17,6 +17,7 @@ def preprocess_data(path):
         df.drop(columns=['RowNumber', 'CustomerId', 'Surname'], inplace=True)
 
         # One-hot encoding
+        categorical_cols = ['Gender', 'Geography', 'Card Type']
         encoder = OneHotEncoder(drop='first', sparse_output=False)
         encoded = encoder.fit_transform(df[categorical_cols])
         encoded_df = pd.DataFrame(encoded, columns=encoder.get_feature_names_out(categorical_cols))
