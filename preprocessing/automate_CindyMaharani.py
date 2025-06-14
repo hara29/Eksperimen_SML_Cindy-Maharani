@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 import pickle 
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.model_selection import train_test_split
 from imblearn.over_sampling import SMOTE
 
